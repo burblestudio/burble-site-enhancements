@@ -5,7 +5,7 @@
  * Description:       Burble Site Enhancements's plugin description
  * Requires at least: 6.3.0
  * Requires PHP:      7.4
- * Version:           0.0.1
+ * Version:           0.0.2
  * Author:            burblestudio
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
@@ -40,8 +40,24 @@ new DPUpdateChecker(
 	constant($plugin_prefix . '_BASE')
 );
 
-function cks_enqueue_admin_scripts() {
-    wp_enqueue_script('cks-admin-js', plugins_url('/js/admin-shortcuts.js', __FILE__), array('jquery'), null, true);
+/* Load Keyboard Shortcuts */
+function cks_enqueue_scripts() {
+    // Ensure the script only loads on the front-end if the user is logged in
+    if (is_user_logged_in()) {
+        wp_enqueue_script('cks-admin-js', plugins_url('/js/admin-shortcuts.js', __FILE__), array('jquery'), null, true);
+    }
+}
+add_action('admin_enqueue_scripts', 'cks_enqueue_scripts');  // For the admin area
+add_action('wp_enqueue_scripts', 'cks_enqueue_scripts');     // For the front-end
+
+/* Load duplicate posts link */
+function load_duplicate_posts_admin() {
+    // Check if we are in the admin area
+    if (is_admin()) {
+        // Include the duplicate-posts.php file from the /inc/ directory
+        require_once plugin_dir_path(__FILE__) . 'inc/duplicate-posts.php';
+    }
 }
 
-add_action('admin_enqueue_scripts', 'cks_enqueue_admin_scripts');
+// Hook our function into WordPress initialization action
+add_action('admin_init', 'load_duplicate_posts_admin');
