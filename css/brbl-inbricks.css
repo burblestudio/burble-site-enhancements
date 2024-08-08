@@ -1,0 +1,22 @@
+<style>
+
+/* Bricks Template Preview - Grid Overrides */
+
+  #bricks-popup.templates img {
+    height: auto;
+    object-fit: contain !important;
+    background-color: var(--black-trans-20);
+    max-height: 500px;
+  }
+
+  #bricks-popup .bricks-layout-item-inner {
+    background-color: var(--black-trans-60);
+  }
+
+  #bricks-popup.templates .bricks-layout-item-inner {
+    box-shadow: 0 0 30px -10px var(--black-trans-80);
+    border: solid 1px var(--white-trans-10);
+  }
+
+  
+  </style>

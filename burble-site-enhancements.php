@@ -5,7 +5,7 @@
  * Description:       Burble Site Enhancements's plugin description
  * Requires at least: 6.3.0
  * Requires PHP:      7.4
- * Version:           0.0.2
+ * Version:           0.1.0
  * Author:            burblestudio
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
@@ -40,24 +40,29 @@ new DPUpdateChecker(
 	constant($plugin_prefix . '_BASE')
 );
 
-/* Load Keyboard Shortcuts */
-function cks_enqueue_scripts() {
-    // Ensure the script only loads on the front-end if the user is logged in
-    if (is_user_logged_in()) {
-        wp_enqueue_script('cks-admin-js', plugins_url('/js/admin-shortcuts.js', __FILE__), array('jquery'), null, true);
+// Enqueue admin shortcuts script for logged-in administrators (both front-end and back-end)
+function enqueue_admin_shortcuts_script() {
+    if ( is_user_logged_in() && current_user_can('administrator') ) {
+        wp_enqueue_script( 'admin-shortcuts', plugin_dir_url( __FILE__ ) . 'js/admin-shortcuts.js', array(), '1.0', true );
     }
 }
-add_action('admin_enqueue_scripts', 'cks_enqueue_scripts');  // For the admin area
-add_action('wp_enqueue_scripts', 'cks_enqueue_scripts');     // For the front-end
+add_action( 'admin_enqueue_scripts', 'enqueue_admin_shortcuts_script' );
+add_action( 'wp_enqueue_scripts', 'enqueue_admin_shortcuts_script' );
 
-/* Load duplicate posts link */
-function load_duplicate_posts_admin() {
-    // Check if we are in the admin area
-    if (is_admin()) {
-        // Include the duplicate-posts.php file from the /inc/ directory
-        require_once plugin_dir_path(__FILE__) . 'inc/duplicate-posts.php';
+// Enqueue duplicate posts script only on specific admin pages
+function enqueue_duplicate_posts_script($hook_suffix) {
+    if ( current_user_can('edit_posts') || current_user_can('edit_pages') ) {
+        if ( strpos($hook_suffix, 'edit.php') !== false ) {
+            include plugin_dir_path( __FILE__ ) . 'inc/duplicate-posts.php';
+        }
     }
 }
+add_action( 'admin_enqueue_scripts', 'enqueue_duplicate_posts_script' );
 
-// Hook our function into WordPress initialization action
-add_action('admin_init', 'load_duplicate_posts_admin');
+// Enqueue front-end CSS for logged-in editors or higher
+function enqueue_custom_frontend_css() {
+    if ( is_user_logged_in() && current_user_can('edit_others_posts') ) {
+        wp_enqueue_style( 'brble-inbricks', plugin_dir_url( __FILE__ ) . 'css/brble-inbricks.css', array(), '1.0' );
+    }
+}
+add_action( 'wp_enqueue_scripts', 'enqueue_custom_frontend_css' );

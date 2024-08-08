@@ -5,6 +5,7 @@ addEventListener("keydown", (event) => {
     const publishButton = document.getElementById('publish');
     const newPublishButton = document.querySelector('.components-button.editor-post-publish-panel__toggle.editor-post-publish-button__button.is-primary.is-compact');
     const featuredImageButton = document.querySelector('.button.media-button.button-primary.button-large.media-button-select');
+    const featuredImageButton2 = document.querySelector('.components-button.editor-post-featured-image__toggle');
     const setPostThumbnailLink = document.getElementById('set-post-thumbnail');
     const setPostThumbnailAnchor = document.querySelector('a#set-post-thumbnail');
 
@@ -13,6 +14,7 @@ addEventListener("keydown", (event) => {
 
     const editWithBricksLink = document.querySelector('#wp-admin-bar-edit_with_bricks > a');
     const toolbarEditWithBricksLink = document.getElementById('toolbar-edit_with_bricks');
+    const editWithBricksSpanLink = document.querySelector('.edit_with_bricks a[href*="bricks=run"]');
 
     const featuredImageEditButton = document.querySelector('button.components-button.editor-post-featured-image__preview[aria-label="Edit or replace the image"]');
 
@@ -42,6 +44,7 @@ addEventListener("keydown", (event) => {
         event.preventDefault();
 
         if (event.shiftKey) {
+            // Open in new tab
             if (updateButton) {
                 openLinkInNewTab(updateButton);
             } else if (publishButton) {
@@ -50,6 +53,7 @@ addEventListener("keydown", (event) => {
                 openLinkInNewTab(newPublishButton);
             }
         } else {
+            // Click the appropriate button
             if (updateButton) {
                 updateButton.click();
             } else if (publishButton) {
@@ -65,6 +69,7 @@ addEventListener("keydown", (event) => {
         event.preventDefault();
 
         if (event.shiftKey) {
+            // Open in new tab
             if (featuredImageButton) {
                 openLinkInNewTab(featuredImageButton);
             } else if (setPostThumbnailLink) {
@@ -75,8 +80,11 @@ addEventListener("keydown", (event) => {
                 featuredImageEditButton.click();
             }
         } else {
+            // Click the appropriate button or link
             if (featuredImageButton) {
                 featuredImageButton.click();
+            } else if (featuredImageButton2) {
+                featuredImageButton2.click();
             } else if (setPostThumbnailLink) {
                 setPostThumbnailLink.click();
             } else if (setPostThumbnailAnchor) {
@@ -87,11 +95,12 @@ addEventListener("keydown", (event) => {
         }
     }
 
-    // Check if Ctrl+E is pressed
-    if (event.ctrlKey && event.key.toLowerCase() === 'e') {
+   // Check if Ctrl+E is pressed
+   if (event.ctrlKey && event.key.toLowerCase() === 'e') {
         event.preventDefault();
 
         if (event.shiftKey) {
+            // Open in new tab
             if (editInWordPressLink) {
                 openLinkInNewTab(editInWordPressLink);
             } else if (wpAdminBarEditLink) {
@@ -103,6 +112,7 @@ addEventListener("keydown", (event) => {
                 }
             }
         } else {
+            // Click the appropriate button or link
             if (editInWordPressLink) {
                 editInWordPressLink.click();
             } else if (wpAdminBarEditLink) {
@@ -121,6 +131,7 @@ addEventListener("keydown", (event) => {
         event.preventDefault();
 
         if (event.shiftKey) {
+            // Open in new tab
             if (editWithBricksLink) {
                 openLinkInNewTab(editWithBricksLink);
             } else if (toolbarEditWithBricksLink) {
@@ -132,6 +143,7 @@ addEventListener("keydown", (event) => {
                 }
             }
         } else {
+            // Click the appropriate button or link
             if (editWithBricksLink) {
                 editWithBricksLink.click();
             } else if (toolbarEditWithBricksLink) {
